@@ -13,3 +13,11 @@ code {
   font-family: source-code-pro, Menlo, Monaco, Consolas, 'Courier New',
     monospace;
 }
+
+button {
+  width: 100px;
+  height: 30px;
+  background-color: rgb(192, 80, 106);
+  border-radius: 10%;
+
+}
