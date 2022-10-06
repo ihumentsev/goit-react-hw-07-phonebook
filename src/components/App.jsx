@@ -1,22 +1,19 @@
-import { useState, useEffect } from 'react';
+import { useState } from 'react';
 import ContactForm from './ContactForm/ContactForm';
 import shortid from 'shortid';
 import Filter from './Filter/Filter';
 import ContactList from './ContactList/ContactList';
 import css from '../components/App.module.css';
+import { useSelector, useDispatch } from 'react-redux';
+import { add } from '../redux/contactsSlice';
 
 export default function App() {
-  // state = {
-  //   contacts: [],
-  //   filter: '',
-  // };
-  const [contacts, setContacts] = useState(
-    JSON.parse(localStorage.getItem('contacts')) || []
-  );
+  const contacts = useSelector(state => state.contacts);
+
   const [filter, setFilter] = useState('');
 
+  const dispatch = useDispatch();
   const addContact = event => {
-    console.log(event);
     const searchSameName = contacts.map(cont => cont.name).includes(event.name);
 
     if (searchSameName) {
@@ -27,8 +24,7 @@ export default function App() {
         name: event.name,
         number: event.number,
       };
-
-      setContacts([contact, ...contacts]);
+      dispatch(add(contact));
     }
   };
 
@@ -42,14 +38,6 @@ export default function App() {
     );
   };
 
-  const removeContact = contactId => {
-    setContacts(contacts.filter(({ id }) => id !== contactId));
-  };
-
-  useEffect(() => {
-    localStorage.setItem('contacts', JSON.stringify(contacts));
-  }, [contacts]);
-
   const visibleContacts = getVisibleContacts();
   return (
     <div className={css.conteiner}>
@@ -57,7 +45,7 @@ export default function App() {
       <ContactForm addContact={addContact} />
       <h2>Contacts</h2>
       <Filter value={filter} onChangeFilter={changeFilter} />
-      <ContactList contacts={visibleContacts} onRemoveContact={removeContact} />
+      <ContactList contacts={visibleContacts} />
     </div>
   );
 }
