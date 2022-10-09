@@ -8,6 +8,7 @@ const contactsSlice = createSlice({
     isLoading: false,
     error: null,
     filter: '',
+    upDate: false,
   },
   reducers: {
     // add(state, action) {
@@ -36,14 +37,17 @@ const contactsSlice = createSlice({
     },
     [addContacts.pending]: (state, action) => {
       state.isLoading = true;
+      state.upDate = false;
     },
     [addContacts.fulfilled]: (state, action) => {
       state.isLoading = false;
-      console.log(action.payload);
-      state.contacts.push(action.payload);
+      state.upDate = true;
+      // console.log(action.payload);
+      // state.contacts.push(action.payload);
     },
     [addContacts.rejected]: (state, action) => {
       state.isLoading = false;
+      state.upDate = false;
       state.error = action.payload;
     },
     [removeContacts.pending]: state => {

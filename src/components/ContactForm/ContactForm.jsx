@@ -1,11 +1,12 @@
-import { useState } from 'react';
-import shortid from 'shortid';
+import { useState, useEffect } from 'react';
+// import shortid from 'shortid';
 import css from '../ContactForm/ContactForm.module.css';
 import { useSelector, useDispatch } from 'react-redux';
-import { addContacts } from 'redux/contactsOperation';
+import { addContacts, getContacts } from 'redux/contactsOperation';
 
 export default function ContactForm() {
   const contacts = useSelector(state => state.contacts);
+  const isUpdate = useSelector(state => state.upDate);
   const dispatch = useDispatch();
   const [name, setName] = useState('');
   const [number, setNumber] = useState('');
@@ -31,11 +32,11 @@ export default function ContactForm() {
       alert(`${event.name} is already in contacts`);
     } else {
       const contact = {
-        id: shortid.generate(),
+        // id: shortid.generate(),
         name,
         number,
       };
-      console.log(contact);
+
       dispatch(addContacts(contact));
     }
     formReset();
@@ -45,6 +46,10 @@ export default function ContactForm() {
     setName('');
     setNumber('');
   };
+
+  useEffect(() => {
+    isUpdate && dispatch(getContacts());
+  }, [isUpdate, dispatch]);
 
   return (
     <>
