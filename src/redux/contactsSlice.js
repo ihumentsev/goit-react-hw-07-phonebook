@@ -1,39 +1,23 @@
 import { createSlice } from '@reduxjs/toolkit';
 import { getContacts, addContacts, removeContacts } from './contactsOperation';
-// const initialcontacts = [];
+
 const contactsSlice = createSlice({
   name: 'contacts',
   initialState: {
-    contacts: [
-      {
-        name: 'Clifford Steuber',
-        number: '607-470-4331',
-        id: '1',
-      },
-      {
-        name: 'Faye Flatley',
-        number: '542-774-2046',
-        id: '2',
-      },
-      {
-        name: 'Molly Haley',
-        number: '625-659-2150',
-        id: '3',
-      },
-    ],
+    contacts: [],
     isLoading: false,
     error: null,
     filter: '',
   },
   reducers: {
-    add(state, action) {
-      state.contacts.push(action.payload);
-    },
-    remove(state, action) {
-      state.contacts = state.contacts.filter(
-        contact => contact.id !== action.payload
-      );
-    },
+    // add(state, action) {
+    //   state.contacts.push(action.payload);
+    // },
+    // remove(state, action) {
+    //   state.contacts = state.contacts.filter(
+    //     contact => contact.id !== action.payload
+    //   );
+    // },
     filter(state, action) {
       state.filter = action.payload;
     },
@@ -55,6 +39,7 @@ const contactsSlice = createSlice({
     },
     [addContacts.fulfilled]: (state, action) => {
       state.isLoading = false;
+      console.log(action.payload);
       state.contacts.push(action.payload);
     },
     [addContacts.rejected]: (state, action) => {

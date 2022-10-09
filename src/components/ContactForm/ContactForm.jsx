@@ -1,8 +1,12 @@
-import PropTypes from 'prop-types';
 import { useState } from 'react';
+import shortid from 'shortid';
 import css from '../ContactForm/ContactForm.module.css';
+import { useSelector, useDispatch } from 'react-redux';
+import { addContacts } from 'redux/contactsOperation';
 
-export default function ContactForm({ addContact }) {
+export default function ContactForm() {
+  const contacts = useSelector(state => state.contacts);
+  const dispatch = useDispatch();
   const [name, setName] = useState('');
   const [number, setNumber] = useState('');
 
@@ -22,8 +26,18 @@ export default function ContactForm({ addContact }) {
 
   const handleFormSubmit = event => {
     event.preventDefault();
-    const contact = { name, number };
-    addContact(contact);
+    const addName = contacts.map(el => el.name).includes(name);
+    if (addName) {
+      alert(`${event.name} is already in contacts`);
+    } else {
+      const contact = {
+        id: shortid.generate(),
+        name,
+        number,
+      };
+      console.log(contact);
+      dispatch(addContacts(contact));
+    }
     formReset();
   };
 
@@ -66,7 +80,3 @@ export default function ContactForm({ addContact }) {
     </>
   );
 }
-
-ContactForm.propTypes = {
-  addContact: PropTypes.func.isRequired,
-};
